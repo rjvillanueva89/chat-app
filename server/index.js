@@ -13,7 +13,9 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   socket.on("message", ({ channel, payload }) => {
-    if (channel && payload) socket.broadcast.emit(channel, payload)
+    console.log(payload)
+
+    if (channel && payload) io.emit(channel, payload)
   })
 })
 
