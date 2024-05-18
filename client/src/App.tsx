@@ -1,32 +1,20 @@
-import { useEffect, useRef, useState } from "react"
-import { io } from "socket.io-client"
+import { useRef, useState } from "react"
+import { useSocket } from "./hooks/use-socket"
 
 export default function App() {
-  const socket = io("http://localhost:3000")
-  const [messages, setMessages] = useState<string[]>([])
-
   const ref = useRef<HTMLTextAreaElement>(null)
-
-  useEffect(() => {
-    const handlePayload = (payload: string) =>
-      setMessages((current) => [...current, payload])
-    socket.on("chat-app", handlePayload)
-
-    return () => {
-      socket.off("chat-app", handlePayload)
-    }
-  }, [socket])
+  const [messages, setMessages] = useState<string[]>([])
+  const addMessage = (message: string) =>
+    setMessages((current) => [...current, message])
+  const { emit } = useSocket<string>({
+    channel: "chat-app",
+    onPayload: (payload) => addMessage(payload),
+  })
 
   const handleSubmit = () => {
-    if (ref.current && ref.current.value) {
-      const message = ref.current.value
-
-      socket.emit("message", {
-        channel: "chat-app",
-        payload: message,
-      })
-
-      setMessages((current) => [...current, message])
+    if (ref.current?.value) {
+      emit(ref.current.value)
+      addMessage(ref.current.value)
 
       ref.current.value = ""
     }

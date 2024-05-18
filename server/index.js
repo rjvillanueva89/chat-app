@@ -12,6 +12,8 @@ const io = new Server(server, {
 })
 
 io.on("connection", (socket) => {
+  console.log("someone connected")
+
   socket.on("message", ({ channel, payload }) => {
     console.log(payload)
 
