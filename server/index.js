@@ -3,7 +3,11 @@ const cors = require("cors")
 const { createServer } = require("node:http")
 const { Server } = require("socket.io")
 
-const WHITELIST = ["http://localhost:5173", "http://localhost:3000"]
+const WHITELIST = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://chat-app-05192024.vercel.app/",
+]
 const port = process.env.PORT || 3000
 const app = express()
 
