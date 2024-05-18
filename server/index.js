@@ -1,13 +1,23 @@
 const express = require("express")
+const cors = require("cors")
 const { createServer } = require("node:http")
 const { Server } = require("socket.io")
 
+const WHITELIST = ["http://localhost:5173", "http://localhost:3000"]
+const port = process.env.PORT || 3000
 const app = express()
+
+app.use(
+  cors({
+    origin: WHITELIST,
+  })
+)
+
 const server = createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: WHITELIST,
   },
 })
 
@@ -21,6 +31,6 @@ io.on("connection", (socket) => {
   })
 })
 
-server.listen(3000, () => {
-  console.log("server running at http://localhost:3000")
+server.listen(port, () => {
+  console.log("server running")
 })
