@@ -7,7 +7,7 @@ const server = createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:5173"],
   },
 })
 
@@ -17,6 +17,6 @@ io.on("connection", (socket) => {
   })
 })
 
-server.listen(3001, () => {
-  console.log("server running at http://localhost:3001")
+server.listen(3000, () => {
+  console.log("server running at http://localhost:3000")
 })
